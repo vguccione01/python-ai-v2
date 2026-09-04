@@ -3,7 +3,7 @@ from datetime import UTC, datetime
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from src.config import settings
+from lipari_bank_ai.config import settings
 
 
 class HealthResponse(BaseModel):
