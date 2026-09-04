@@ -7,6 +7,10 @@ jobs:
   quality:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: lipari-bank-ai
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
