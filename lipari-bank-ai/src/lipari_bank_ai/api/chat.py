@@ -1,7 +1,9 @@
 from datetime import UTC, datetime
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from lipari_bank_ai.config import Settings
+from lipari_bank_ai.deps import get_settings
 from lipari_bank_ai.types.chat import ChatRequest, ChatResponse
 from lipari_bank_ai.types.error import ErrorResponse
 
@@ -47,12 +49,12 @@ router = APIRouter(prefix="/api/ai", tags=["Chat"])
         429: {"description": "Rate limit"},
     },
 )
-async def chat(req: ChatRequest) -> ChatResponse:
+async def chat(req: ChatRequest, settings: Settings = Depends(get_settings)) -> ChatResponse:
     return ChatResponse(
         session_id=req.session_id,
         reply=f"Echo: {req.message}",
         tokens_used=10,
         cost_eur=0.0001,
-        model_used="dummy",
+        model_used=settings.default_model,
         created_at=datetime.now(UTC),
     )
