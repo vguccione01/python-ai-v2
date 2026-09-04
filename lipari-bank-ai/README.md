@@ -49,7 +49,7 @@ Il file `.env` contiene dati sensibili e non deve essere committato.
 Dalla directory principale del progetto:
 
 ```bash
-uv run uvicorn src.main:app --reload
+uv run uvicorn lipari_bank_ai.main:app --reload
 ```
 
 L’API sarà disponibile all’indirizzo <http://127.0.0.1:8000>.
