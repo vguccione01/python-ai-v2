@@ -64,14 +64,12 @@ async def general_exception_handler(req: Request, exc: Exception) -> JSONRespons
         },
     )
 
+
 ######################################
 # MIDDLEWARE
 ######################################
 @app.middleware("http")
-async def add_request_id(
-        request: Request, 
-        call_next: RequestResponseEndpoint
-    ) -> Response:
+async def add_request_id(request: Request, call_next: RequestResponseEndpoint) -> Response:
     request_id = str(uuid.uuid4())
     start = time.time()
     response = await call_next(request)
@@ -79,13 +77,15 @@ async def add_request_id(
     response.headers["X-Process-Time"] = str(time.time() - start)
     return response
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:4200", "http://localhost:5173"],
     allow_methods=["*"],
     allow_headers=["*"],
-    allow_credentials=True
+    allow_credentials=True,
 )
+
 
 ######################################
 # ROUTES
