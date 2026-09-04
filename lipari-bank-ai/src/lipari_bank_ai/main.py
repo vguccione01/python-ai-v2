@@ -1,15 +1,16 @@
-from datetime import UTC, datetime
-from fastapi import FastAPI, Request, Response
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.base import RequestResponseEndpoint
-from lipari_bank_ai.config import settings
-from lipari_bank_ai.exceptions import AppError
-from lipari_bank_ai.api import chat, categorize
-
 import time
 import uuid
+from datetime import UTC, datetime
+
+from fastapi import FastAPI, Request, Response
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from starlette.middleware.base import RequestResponseEndpoint
+
+from lipari_bank_ai.api import categorize, chat
+from lipari_bank_ai.config import settings
+from lipari_bank_ai.exceptions import AppError
 
 app = FastAPI(
     title=settings.app_name,
