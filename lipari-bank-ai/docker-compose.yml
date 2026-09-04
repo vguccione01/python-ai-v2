@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16  # PostgreSQL 16 + pgvector preinstallato
+    environment:
+      POSTGRES_USER: lipariuser
+      POSTGRES_PASSWORD: liparipassword
+      POSTGRES_DB: lipari_python_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - lipari-ai-data:/var/lib/postgresql/data
+
+volumes:
+  lipari-ai-data:
