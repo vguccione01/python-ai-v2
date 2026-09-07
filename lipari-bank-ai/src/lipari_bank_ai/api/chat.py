@@ -2,8 +2,10 @@ from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends
 
-from lipari_bank_ai.config import Settings
-from lipari_bank_ai.deps import get_settings
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from lipari_bank_ai.db.session import get_db
+from lipari_bank_ai.services.chat_service import ChatService
 from lipari_bank_ai.types.chat import ChatRequest, ChatResponse
 from lipari_bank_ai.types.error import ErrorResponse
 
@@ -49,12 +51,8 @@ router = APIRouter(prefix="/api/ai", tags=["Chat"])
         429: {"description": "Rate limit"},
     },
 )
-async def chat(req: ChatRequest, settings: Settings = Depends(get_settings)) -> ChatResponse:
-    return ChatResponse(
-        session_id=req.session_id,
-        reply=f"Echo: {req.message}",
-        tokens_used=10,
-        cost_eur=0.0001,
-        model_used=settings.default_model,
-        created_at=datetime.now(UTC),
-    )
+async def chat(req: ChatRequest, session: AsyncSession = Depends(get_db)) -> ChatResponse:
+
+    service = ChatService(session)
+
+    return await service.chat(req, user_id="dummy_user")
