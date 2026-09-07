@@ -1,56 +1,19 @@
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from lipari_bank_ai.db.session import get_db
+from lipari_bank_ai.llm.factory import get_llm_provider
 from lipari_bank_ai.services.chat_service import ChatService
 from lipari_bank_ai.types.chat import ChatRequest, ChatResponse
-from lipari_bank_ai.types.error import ErrorResponse
+from pathlib import Path
+
 
 router = APIRouter(prefix="/api/ai", tags=["Chat"])
 
+SYSTEM_PROMPT = (Path(__file__).parent.parent / "prompts" / "chat_system_v1.md").read_text()
 
-@router.post(
-    "/chat",
-    response_model=ChatResponse,
-    summary="Send message to AI assistant",
-    description="Multi-turn conversation. In G4 collegheremo LLM reale.",
-    responses={
-        200: {
-            "description": "OK",
-            "content": {
-                "application/json": {
-                    "example": ChatResponse(
-                        session_id="string",
-                        reply="string",
-                        tokens_used=10,
-                        cost_eur=0.0001,
-                        model_used="dummy",
-                        created_at="2026-09-04T12:44:59.102021Z",
-                    )
-                }
-            },
-        },
-        422: {
-            "description": "Unprocessable Entity",
-            "content": {
-                "application/json": {
-                    "example": ErrorResponse(
-                        timestamp="2026-09-04T12:50:56.542130+00:00",
-                        status=422,
-                        error="VALIDATION_ERROR",
-                        message="Input non valido",
-                        path="/api/ai/chat",
-                        details=["session_id=Input should be a valid string"],
-                    )
-                }
-            },
-        },
-        429: {"description": "Rate limit"},
-    },
-)
-async def chat(req: ChatRequest, session: AsyncSession = Depends(get_db)) -> ChatResponse:
 
-    service = ChatService(session)
-
-    return await service.chat(req, user_id="dummy_user")
+@router.post("/chat", response_model=ChatResponse)
+async def chat(req: ChatRequest, db: AsyncSession = Depends(get_db)) -> ChatResponse:
+    service = ChatService(db, get_llm_provider(), SYSTEM_PROMPT)
+    return await service.chat(req, user_id="dummy-user")
