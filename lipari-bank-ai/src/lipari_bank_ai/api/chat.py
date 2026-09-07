@@ -1,7 +1,5 @@
-from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from lipari_bank_ai.db.session import get_db
