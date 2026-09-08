@@ -1,9 +1,11 @@
-from sqlalchemy.ext.asyncio import AsyncSession
 from datetime import UTC, datetime
 
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from lipari_bank_ai.db.repos import ChatRepository
-from lipari_bank_ai.llm.client import LLMProvider, Message
 from lipari_bank_ai.exceptions import ChatSessionNotFoundError
+from lipari_bank_ai.llm.client import LLMProvider
+from lipari_bank_ai.llm.types import Message
 from lipari_bank_ai.types.chat import ChatRequest, ChatResponse
 
 

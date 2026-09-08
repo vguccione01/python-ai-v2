@@ -2,6 +2,7 @@ from anthropic import AsyncAnthropic
 
 from lipari_bank_ai.llm.types import LLMResponse, Message
 
+
 class AnthropicProvider:
     PRICING = {
         "claude-haiku-4-5-20251001": (0.000226, 0.001129),

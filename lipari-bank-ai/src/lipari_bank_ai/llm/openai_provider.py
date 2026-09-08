@@ -2,6 +2,7 @@ from openai import AsyncOpenAI
 
 from lipari_bank_ai.llm.types import LLMResponse, Message
 
+
 class OpenAIProvider:
     PRICING = {  # EUR per 1k tokens (input/output)
         "gpt-4o-mini": (0.00014, 0.00056),

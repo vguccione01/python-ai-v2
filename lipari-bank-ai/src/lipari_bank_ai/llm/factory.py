@@ -1,8 +1,9 @@
 from lipari_bank_ai.config import settings
-from lipari_bank_ai.llm.client import LLMProvider
 from lipari_bank_ai.llm.anthropic_provider import AnthropicProvider
+from lipari_bank_ai.llm.client import LLMProvider
 from lipari_bank_ai.llm.openai_provider import OpenAIProvider
 from lipari_bank_ai.llm.opencode_provider import OpencodeProvider
+
 
 def get_llm_provider(model: str | None = None) -> LLMProvider:
     selected = model or settings.default_model

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
+
 from lipari_bank_ai.services.categorize_service import categorize as categorize_service
 from lipari_bank_ai.types.categorize import CategorizeRequest, CategorizeResponse
-
 
 router = APIRouter(prefix="/api/ai", tags=["Categorize"])
 

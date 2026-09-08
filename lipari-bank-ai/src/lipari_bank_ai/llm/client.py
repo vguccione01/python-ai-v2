@@ -1,5 +1,6 @@
 from typing import Protocol
-from lipari_bank_ai.llm.types import Message, LLMResponse
+
+from lipari_bank_ai.llm.types import LLMResponse, Message
 
 
 class LLMProvider(Protocol):
