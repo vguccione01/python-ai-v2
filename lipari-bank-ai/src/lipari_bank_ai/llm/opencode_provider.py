@@ -29,8 +29,6 @@ class OpencodeProvider:
             parts=parts,
         )
 
-        # print(f"{response}")
-
         text = next(
             (p["text"] for p in response.parts if p.get("type") == "text"),
             "",
@@ -39,7 +37,7 @@ class OpencodeProvider:
         # Questi al momento sono Any. Vanno modellati e validati
         tokens = response.info.get("tokens", {})
         input_tokens = tokens.get("input", 0)
-        output_tokens = tokens.get("output", 0)
+        output_tokens = tokens.get("output", 0)   
 
         return LLMResponse(
             content=text,
