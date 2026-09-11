@@ -19,8 +19,8 @@ Subcategory: specifica più precisa in italiano (es. "ENERGY", "SUPERMARKET", "F
 Confidence: tua sicurezza 0.0-1.0.
 Reasoning: 1-2 frasi spiegando la scelta.
 
-Return only a valid JSON object without markdown delimiters and with these fields: category, subcategory,
-confidence, reasoning.
+Return only a valid JSON object without markdown delimiters and with these fields:
+category, subcategory, confidence, reasoning.
 """
 
 

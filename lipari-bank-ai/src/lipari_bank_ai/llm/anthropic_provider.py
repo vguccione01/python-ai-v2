@@ -1,4 +1,5 @@
 from anthropic import AsyncAnthropic
+from anthropic.types import MessageParam, TextBlock
 
 from lipari_bank_ai.llm.types import LLMResponse, Message
 
@@ -16,7 +17,11 @@ class AnthropicProvider:
     async def complete(self, messages: list[Message], max_tokens: int = 500) -> LLMResponse:
         # Separa system
         system = next((m.content for m in messages if m.role == "system"), None)
-        user_messages = [m.model_dump() for m in messages if m.role != "system"]
+        user_messages: list[MessageParam] = [
+            {"role": m.role, "content": m.content}
+            for m in messages
+            if m.role in ("user", "assistant")
+        ]
 
         response = await self.client.messages.create(
             model=self.model,
@@ -31,7 +36,10 @@ class AnthropicProvider:
         cost_eur = (input_tokens * input_cost + output_tokens * output_cost) / 1000
 
         return LLMResponse(
-            content=response.content[0].text,
+            content=next(
+                (block.text for block in response.content if isinstance(block, TextBlock)),
+                "",
+            ),
             tokens_used=input_tokens + output_tokens,
             cost_eur=cost_eur,
             model=self.model,

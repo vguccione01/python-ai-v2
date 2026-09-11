@@ -1,5 +1,5 @@
 from opencode_ai import AsyncOpencode
-from opencode_ai.types import TextPartInputParam
+from opencode_ai.types import TextPart, TextPartInputParam
 
 from lipari_bank_ai.llm.types import LLMResponse, Message
 
@@ -29,15 +29,22 @@ class OpencodeProvider:
             parts=parts,
         )
 
+        session_messages = await self.client.session.messages(session.id)
+        response_parts = next(
+            (
+                message.parts
+                for message in reversed(session_messages)
+                if message.info.id == response.id
+            ),
+            [],
+        )
         text = next(
-            (p["text"] for p in response.parts if p.get("type") == "text"),
+            (part.text for part in response_parts if isinstance(part, TextPart)),
             "",
         )
 
-        # Questi al momento sono Any. Vanno modellati e validati
-        tokens = response.info.get("tokens", {})
-        input_tokens = tokens.get("input", 0)
-        output_tokens = tokens.get("output", 0)   
+        input_tokens = int(response.tokens.input)
+        output_tokens = int(response.tokens.output)
 
         return LLMResponse(
             content=text,
