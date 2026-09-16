@@ -1,8 +1,9 @@
-from sqlalchemy import select, text
-from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import BaseModel
+from typing import Any
 
-from lipari_bank_ai.db.models import DocumentChunk
+from pydantic import BaseModel
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from lipari_bank_ai.llm.embedding_client import EmbeddingClient
 
 
@@ -11,7 +12,7 @@ class RetrievalResult(BaseModel):
     document_id: str
     content: str
     similarity: float
-    metadata: dict
+    metadata: dict[str, Any]
 
 
 class RetrievalService:
@@ -31,7 +32,10 @@ class RetrievalService:
             LIMIT :top_k
         """)
 
-        result = await self.session.execute(stmt, {"query_emb": str(query_embedding), "top_k": top_k})
+        result = await self.session.execute(stmt, {
+            "query_emb": str(query_embedding),
+            "top_k": top_k
+        })
         rows = result.fetchall()
 
         return [

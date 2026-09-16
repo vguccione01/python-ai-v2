@@ -1,7 +1,9 @@
-import re
+from typing import Any
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from lipari_bank_ai.db.models import DocumentChunk
+from lipari_bank_ai.lib.chunking import chunk_text
 from lipari_bank_ai.llm.embedding_client import EmbeddingClient
 
 
@@ -11,9 +13,10 @@ class IngestService:
         self.embedding_client = embedding_client
 
     async def ingest_document(
-        self, document_id: str, content: str, metadata: dict | None = None,
+        self, document_id: str, content: str, metadata: dict[str, Any] | None = None,
     ) -> int:
-        chunks = chunk_text(content, chunk_size=500, overlap=50)
+        # Ho tutti documenti markdown con paragrafi separati da ## quindi non ho bisogno di overlap
+        chunks = chunk_text(content, chunk_size=500, overlap=0)
         embeddings = await self.embedding_client.embed(chunks)
 
         for idx, (chunk, embedding) in enumerate(zip(chunks, embeddings, strict=True)):
@@ -28,21 +31,3 @@ class IngestService:
 
         await self.session.commit()
         return len(chunks)
-
-def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50) -> list[str]:
-    """Split text into chunks of ~chunk_size chars with overlap."""
-    chunks = []
-    start = 0
-    while start < len(text):
-        end = start + chunk_size
-        # Try to break at sentence boundary
-        if end < len(text):
-            # Find nearest `.` `\n` `;`
-            for sep in ['. ', '.\n', '? ', '! ']:
-                idx = text.rfind(sep, start, end)
-                if idx > start + chunk_size // 2:  # at least half-full
-                    end = idx + len(sep)
-                    break
-        chunks.append(text[start:end].strip())
-        start = end - overlap
-    return [c for c in chunks if c]

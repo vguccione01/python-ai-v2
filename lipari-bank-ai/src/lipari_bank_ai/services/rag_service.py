@@ -1,11 +1,12 @@
-from lipari_bank_ai.llm.client import LLMProvider, Message
-from lipari_bank_ai.services.retrieval_service import RetrievalService, RetrievalResult
+from lipari_bank_ai.llm.client import LLMProvider
+from lipari_bank_ai.llm.types import Message
+from lipari_bank_ai.services.retrieval_service import RetrievalService
 from lipari_bank_ai.types.advice import AdviceRequest, AdviceResponse, Citation
-
 
 ADVICE_SYSTEM = """Sei un advisor bancario LipariBank esperto.
 
-Hai accesso a documenti ufficiali (regolamenti, tariffe, condizioni). Rispondi alla domanda dell'utente basandoti ESCLUSIVAMENTE sui CONTESTO forniti.
+Hai accesso a documenti ufficiali (regolamenti, tariffe, condizioni). Rispondi alla domanda
+dell'utente basandoti ESCLUSIVAMENTE sui CONTESTO forniti.
 
 Regole:
 - Se la risposta non è nei contesti, dillo onestamente ("Non ho informazioni su...").
@@ -34,7 +35,10 @@ class RAGService:
 
         # 2. Build context string
         context_parts = [
-            f"[doc_id: {c.document_id}, chunk: {c.chunk_id}, similarity: {c.similarity:.2f}]\n{c.content}"
+            f"""
+                [doc_id: {c.document_id}, chunk: {c.chunk_id},
+                similarity: {c.similarity:.2f}]\n{c.content}
+            """
             for c in chunks
         ]
         context = "\n\n---\n\n".join(context_parts)
