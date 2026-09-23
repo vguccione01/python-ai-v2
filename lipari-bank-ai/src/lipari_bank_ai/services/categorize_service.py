@@ -7,7 +7,7 @@ from lipari_bank_ai.types.categorize import CategorizeRequest, CategorizeRespons
 
 CATEGORIZE_SYSTEM = """You are an expert at categorizing Italian bank transactions.
 
-Categories:
+Use ONLY the following categories:
 - UTILITIES (luce, gas, acqua, internet, telefono)
 - GROCERIES (supermercati, alimentari, market)
 - TRANSPORT (carburante, treno, mezzi, parcheggi)
@@ -15,11 +15,13 @@ Categories:
 - ENTERTAINMENT (cinema, palestra, abbonamenti streaming)
 - OTHER (tutto il resto)
 
-Subcategory: specifica più precisa in italiano (es. "ENERGY", "SUPERMARKET", "FUEL").
-Confidence: tua sicurezza 0.0-1.0.
-Reasoning: 1-2 frasi spiegando la scelta.
+Subcategory: more specific subcategory (es. "ENERGY", "SUPERMARKET", "FUEL").
+Confidence: your confidence between 0.0-1.0.
+Reasoning: 1-2 phrases that explain your choose. Do not use the char "
 
-Return only a valid JSON object without markdown delimiters and with these fields:
+Answer only with a valid JSON object, starting with { and ending with }.
+No Markdown delimiters (```json) or other phrases.
+Only a JSON with these fields:
 category, subcategory, confidence, reasoning.
 """
 

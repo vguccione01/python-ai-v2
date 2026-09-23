@@ -1,0 +1,17 @@
+# name: Weekly Eval
+
+# on:
+#   schedule:
+#     - cron: '0 6 * * 1'  # ogni lunedì 6 AM UTC
+
+# jobs:
+#   eval:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: astral-sh/setup-uv@v3
+#       - run: uv sync
+#       - run: uv run pytest -m eval -v
+#         env:
+#           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+#           DATABASE_URL: ${{ secrets.DATABASE_URL }}

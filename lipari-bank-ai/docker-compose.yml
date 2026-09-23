@@ -10,5 +10,7 @@ services:
     volumes:
       - lipari-ai-data:/var/lib/postgresql/data
 
+  ## aggiungere ollama e opencode serve
+
 volumes:
   lipari-ai-data:
