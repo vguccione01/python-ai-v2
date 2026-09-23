@@ -10,7 +10,27 @@ services:
     volumes:
       - lipari-ai-data:/var/lib/postgresql/data
 
-  ## aggiungere ollama e opencode serve
+  ## Se non si ha a disposizione ClaudeCode usare Ollama+OpenCode
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+  
+  opencode:
+    image: ghcr.io/anomalyco/opencode:latest
+    container_name: opencode
+    ports:
+      - "4096:4096"
+    entrypoint: []
+    command: ["opencode", "serve", "--print-logs", "--log-level", "DEBUG", "--hostname", "0.0.0.0", "--port", "4096"]
+    working_dir: /workspace
+    volumes:
+      - ./workspace:/workspace
+      - ./opencode-config:/root/.config/opencode
 
 volumes:
   lipari-ai-data:
+  ollama_data:
