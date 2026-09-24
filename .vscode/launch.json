@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FastAPI (uvicorn)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["lipari_bank_ai.main:app", "--host", "127.0.0.1", "--port", "8000"],
+      "python": "${workspaceFolder}/lipari-bank-ai/.venv/bin/python",
+      "cwd": "${workspaceFolder}/lipari-bank-ai",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "envFile": "${workspaceFolder}/lipari-bank-ai/.env"
+    }
+  ]
+}
