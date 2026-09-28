@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import RequestResponseEndpoint
 
-from lipari_bank_ai.api import advice, categorize, chat
+from lipari_bank_ai.api import advice, auth, categorize, chat
 from lipari_bank_ai.config import settings
 from lipari_bank_ai.exceptions import AppError
 
@@ -33,6 +33,7 @@ async def app_exception_handler(req: Request, exc: AppError) -> JSONResponse:
             "message": exc.message,
             "path": req.url.path,
         },
+        headers=exc.headers,
     )
 
 
@@ -99,3 +100,4 @@ async def health() -> dict[str, str]:
 app.include_router(chat.router)
 app.include_router(categorize.router)
 app.include_router(advice.router)
+app.include_router(auth.router)

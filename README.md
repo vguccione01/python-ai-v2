@@ -89,3 +89,8 @@ Per applicare automaticamente la formattazione con Ruff:
 ```bash
 uv run ruff format .
 ```
+
+Creazione utenti di test su DB (con password `bootcamp`)
+```bash
+uv run python -m src.lipari_bank_ai.scripts.seed_users
+```

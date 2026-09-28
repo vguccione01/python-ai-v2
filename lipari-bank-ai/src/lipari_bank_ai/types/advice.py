@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -7,6 +7,7 @@ class IngestRequest(BaseModel):
     document_id: str = Field(..., max_length=100)
     content: str = Field(..., min_length=10)
     metadata: dict[str, Any] | None = None
+    visibility: Literal["public", "internal", "risk_only", "compliance_only"] = "public"
 
 
 class IngestResponse(BaseModel):
@@ -30,3 +31,4 @@ class AdviceResponse(BaseModel):
     citations: list[Citation]
     tokens_used: int
     cost_eur: float
+    rewritten_query: str | None = None
