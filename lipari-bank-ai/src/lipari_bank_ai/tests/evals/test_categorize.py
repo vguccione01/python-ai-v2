@@ -1,10 +1,8 @@
-import asyncio
 from pathlib import Path
 
 import pytest
 
 from lipari_bank_ai.eval.runners import eval_categorize, eval_rag
-
 
 pytestmark = pytest.mark.eval
 

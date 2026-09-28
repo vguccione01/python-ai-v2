@@ -38,5 +38,10 @@ async def ingest(
 ) -> IngestResponse:
     embedding_client = EmbeddingClient()
     service = IngestService(db, embedding_client)
-    count = await service.ingest_document(req.document_id, req.content, req.visibility, req.metadata)
+    count = await service.ingest_document(
+        req.document_id,
+        req.content,
+        req.visibility,
+        req.metadata
+        )
     return IngestResponse(chunk_count=count, embedding_dim=settings.embedding_dim)

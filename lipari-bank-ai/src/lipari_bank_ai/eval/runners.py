@@ -17,7 +17,6 @@ async def eval_categorize(dataset_path: Path) -> dict[str, Any]:
 
     correct = 0
     failures = []
-    total_cost = 0.0
     total_latency = 0.0
 
     import time

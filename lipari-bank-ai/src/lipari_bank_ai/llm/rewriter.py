@@ -1,7 +1,8 @@
 import logging
 from pathlib import Path
 
-from lipari_bank_ai.llm.client import LLMProvider, Message
+from lipari_bank_ai.llm.client import LLMProvider
+from lipari_bank_ai.llm.types import Message
 
 log = logging.getLogger(__name__)
 

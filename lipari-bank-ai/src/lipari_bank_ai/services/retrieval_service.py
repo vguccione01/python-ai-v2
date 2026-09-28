@@ -1,11 +1,10 @@
 from typing import Any
 
-from lipari_bank_ai.auth.acl import visible_to
-from lipari_bank_ai.db.models import DocumentChunk
 from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from lipari_bank_ai.auth.acl import visible_to
 from lipari_bank_ai.llm.embedding_client import EmbeddingClient
 
 
@@ -95,9 +94,9 @@ class RetrievalService:
 
         return [
             RetrievalResult(
-                chunk_id=str(r.id), 
+                chunk_id=str(r.id),
                 document_id=r.document_id,
-                content=r.content, 
+                content=r.content,
                 similarity=float(r.similarity),
                 metadata=r.chunk_metadata
             )

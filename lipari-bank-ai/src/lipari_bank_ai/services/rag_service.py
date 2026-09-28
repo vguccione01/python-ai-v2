@@ -1,3 +1,8 @@
+import time
+from collections.abc import Generator
+from contextlib import contextmanager
+from dataclasses import asdict, dataclass
+from typing import Any
 from venv import logger
 
 from lipari_bank_ai.auth.deps import UserContext
@@ -8,10 +13,6 @@ from lipari_bank_ai.llm.rewriter import QueryRewriter
 from lipari_bank_ai.llm.types import Message
 from lipari_bank_ai.services.retrieval_service import RetrievalResult, RetrievalService
 from lipari_bank_ai.types.advice import AdviceRequest, AdviceResponse, Citation
-
-import time
-from dataclasses import asdict, dataclass
-from contextlib import contextmanager
 
 ADVICE_SYSTEM = """Sei un advisor bancario LipariBank esperto.
 
@@ -47,9 +48,9 @@ class Fasi:
 
 class RAGService:
     def __init__(
-            self, 
-            retrieval: RetrievalService, 
-            llm: LLMProvider, 
+            self,
+            retrieval: RetrievalService,
+            llm: LLMProvider,
         ) -> None:
             self.retrieval = retrieval
             self.llm = llm
@@ -197,7 +198,7 @@ class RAGService:
             RISPOSTA (con citazioni):"""
 
 @contextmanager
-def _cronometro(fasi: Fasi, campo: str):
+def _cronometro(fasi: Fasi, campo: str) -> Generator[Any, Any, Any]:
     inizio = time.perf_counter()
     try:
         yield

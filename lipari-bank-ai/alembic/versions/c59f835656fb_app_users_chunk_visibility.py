@@ -37,7 +37,11 @@ def upgrade() -> None:
         "document_chunks",
         sa.Column("visibility", sa.String(32), nullable=False, server_default="public"),
     )
-    op.create_index(op.f("ix_document_chunks_visibility"), "document_chunks", ["visibility"], unique=False)
+    op.create_index(op.f(
+        "ix_document_chunks_visibility"),
+        "document_chunks", ["visibility"],
+        unique=False
+        )
     op.alter_column("document_chunks", "visibility", server_default=None)
 
 
