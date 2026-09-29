@@ -12,6 +12,7 @@ from lipari_bank_ai.agents.deps import Deps
 from lipari_bank_ai.auth.deps import UserContext
 from lipari_bank_ai.db.models import Account, Customer, Movement
 from lipari_bank_ai.db.repos import AccountRepository, MovementRepository
+from lipari_bank_ai.db.runs import RunRepository
 from lipari_bank_ai.db.session import Base
 from lipari_bank_ai.llm.embedding_client import EmbeddingClient
 from lipari_bank_ai.services.alerts import AlertService
@@ -70,9 +71,11 @@ async def session() -> AsyncIterator[AsyncSession]:
 
 @pytest.fixture
 def deps_reali(session: AsyncSession) -> Deps:
+    embedder = EmbeddingClient()
     return Deps(accounts=AccountRepository(session), movements=MovementRepository(session),
-                alerts=AlertService(session), retrieval=RetrievalService(session),
-                embedder=EmbeddingClient(), openai=AsyncMock(), model="gpt-4o-mini")
+                alerts=AlertService(session), runs=RunRepository(session),
+                retrieval=RetrievalService(session, embedder),
+                embedder=embedder, openai=AsyncMock(), model="gpt-4o-mini")
 
 
 @pytest.fixture

@@ -20,6 +20,7 @@
     },
     "bash": {
       "*": "ask",
+      "ls": "allow",
       "./mvnw test*": "allow",
       "./mvnw verify": "allow",
       "docker compose*": "allow",

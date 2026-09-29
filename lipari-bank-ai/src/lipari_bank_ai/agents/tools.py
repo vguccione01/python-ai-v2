@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from lipari_bank_ai.agents.deps import Deps
 from lipari_bank_ai.agents.registry import Tool
 from lipari_bank_ai.auth.deps import UserContext
+from lipari_bank_ai.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +94,10 @@ def build_tools_for(user: UserContext, deps: Deps) -> list[Tool]:
         return (f"Segnalazione {alert.id} aperta. Riferisci all'utente questo numero di pratica "
                 "e che la Compliance la prenderà in carico; non riaprirla.")
 
+    def _sopra_soglia(a: SegnalazioneArgs) -> bool:
+        """Un importo che non c'è non è un importo piccolo: nel dubbio si chiede."""
+        return a.importo is None or a.importo > settings.soglia_approvazione_eur
+
     return [
         Tool("find_customer_accounts",
              "I conti di un cliente del portafoglio, con IBAN ed etichetta. Usa questo tool "
@@ -117,5 +122,6 @@ def build_tools_for(user: UserContext, deps: Deps) -> list[Tool]:
         Tool("apri_segnalazione_compliance",
              "Apre una segnalazione alla Compliance su un conto del portafoglio. Usalo solo se "
              "l'utente lo chiede o se la policy recuperata la rende obbligatoria.",
-             SegnalazioneArgs, segnalazione),
+             SegnalazioneArgs, segnalazione,
+             serve_approvazione=_sopra_soglia),
     ]
