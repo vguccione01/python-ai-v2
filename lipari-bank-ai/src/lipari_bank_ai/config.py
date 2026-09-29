@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     embedding_model: str = "nomic-embed-text"
     embedding_dim: int = 768
     ollama_url: str = "http://localhost:11434"
+    agent_model: str = "qwen2.5:7b"
     max_tokens_per_request: int = 2000
     jwt_secret: str
 
