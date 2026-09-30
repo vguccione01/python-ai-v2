@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import RequestResponseEndpoint
 
-from lipari_bank_ai.api import advice, auth, categorize, chat
+from lipari_bank_ai.api import advice, auth, categorize, chat, agent
 from lipari_bank_ai.config import settings
 from lipari_bank_ai.exceptions import AppError
 
@@ -101,3 +101,4 @@ app.include_router(chat.router)
 app.include_router(categorize.router)
 app.include_router(advice.router)
 app.include_router(auth.router)
+app.include_router(agent.router)
